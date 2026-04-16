@@ -1,0 +1,261 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+:root {
+    --primary-color: #4a6fa5;
+    --primary-hover: #3a5a8f;
+    --secondary-color : #6c757d;
+    --success-color: #28a745;
+    --danger-color: #dc3545;
+    --warning-color: #ffc107;
+    --info-color: #17a2b8;
+    --light-color: #f8f9fa;
+    --dark-color: #343a40;
+    --text-color: #212529;
+    --text-light: #6c757d;
+    --bg-color: #ffffff;
+    --bg-secondary: #f8f9fa;
+    --border-color: #dee2e6;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+    --transition-speed: 0.3s;
+    --font-weight-medium :bold;
+}
+body{
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-x: hidden;
+}
+.container{
+    position: relative;
+}
+.container h1{
+    text-align: center;
+    color: var(--primary-color);
+    font-weight: var(--font-weight-medium);
+    font-size: 3rem;
+}
+.container .totalCompletedPending{
+    gap: 1rem;
+}
+.container .row .compteur{
+    border: 1px solid var(--border-color);
+    margin-top: 1rem;
+    box-shadow: 2px 2px 9px var(--shadow-color);
+    border-radius: 10px;
+    padding: 1rem;
+    position: relative;
+}
+.container .row p{
+    color: var(--primary-color);
+    font-size: 2rem;
+    font-weight: var(--font-weight-medium);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.container .row span{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: var(--font-weight-medium);
+}
+.row .controls-group{
+    width: 100%;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid var(--border-color);
+    margin-top: 1rem;
+    box-shadow: 2px 2px 9px var(--shadow-color);
+    border-radius: 10px;
+    padding: 1.5rem;
+    position: relative;
+}
+
+
+.controls-group .controls-input{
+    width: 88%;
+}
+.controls-group .controls-button button{
+    position: relative;
+    background: rgba(0,0, 500, 0.7)!important;
+    color: var(--light-color) !important;
+    padding:0.3rem 3rem;
+    cursor: pointer;
+    border: 1px solid rgba(0,0, 500, 0.7)!important;
+    &:hover{
+        border: 1px solid rgba(0,0, 500, 0.7)!important;
+        background-color:var(--light-color) !important;
+        color: rgba(0,0, 500, 0.7)  !important;
+        transition: var(--transition-speed);
+    }
+}
+.controls-button-filter button{
+    background: rgba(0,0, 500, 0.7)!important;
+    color: var(--light-color) !important;
+    padding:0.3rem 3rem;
+    border: 1px solid rgba(0,0, 500, 0.7)!important;
+    &:hover{
+        border: 1px solid rgba(0,0, 500, 0.7)!important;
+        background-color:var(--light-color) !important;
+        color: rgba(0,0, 500, 0.7)  !important;
+        transition: var(--transition-speed);
+    }
+}
+
+.controls-group .controls-button i{
+    position: absolute;
+    top: 0.55rem;
+    left: 1.5rem;
+}
+.row .row-content{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.row .row-content button{
+    display: flex;
+    justify-content: space-between;
+}
+.row .controls-button-filter{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--border-color);
+    margin-top: 1rem;
+    box-shadow: 2px 2px 9px var(--shadow-color);
+    border-radius: 10px;
+    padding: 1.5rem;
+    position: relative;
+}
+input[type="text"]{
+    outline: none;
+    border-radius: 0.5rem;
+    position: relative;
+}
+.controls-input i{
+    position: absolute;
+    color:#dc3545;
+    right: 9.5rem;
+    top: 2.2rem;
+    font-size: 1.2rem;
+    opacity: 0;
+    visibility: hidden;
+    cursor: pointer;
+    transition: var(--transition-speed);
+}
+.controls-input .visible{
+    visibility: visible;
+    opacity: 1;
+}
+.ListTask{
+    border: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1rem;
+    box-shadow: 2px 2px 9px var(--shadow-color);
+    border-radius: 10px;
+    padding: 1.5rem;
+    position: relative;
+    padding-bottom: 0;
+}
+ul li{
+    list-style: none;
+}
+.list-item{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 3rem;
+    margin-top: 1rem;
+}
+.list-item input[type="checkbox"]{
+    position: absolute;
+    left: 1.5rem;
+    top: auto;
+}
+
+.list-item .list-group-item-text{
+    position: absolute;
+    left: 5rem;
+    font-weight: bold;
+}
+.list-item .button-action{
+    position: absolute;
+    right: 1.5rem;
+    top: auto;
+    gap: 1rem;
+}
+
+.checked{
+    text-decoration: line-through;
+}
+.buttonModifier{
+    background: rgba(0,0, 255, 0.7)!important;
+    color: var(--light-color) !important;
+    padding:0.4rem 0.6rem;
+    border: 0.1px solid rgba(0,0, 255, 0.7)!important;
+    &:hover{
+        border: 1px solid rgba(0,0, 255, 0.7)!important;
+        background-color:var(--light-color) !important;
+        color: rgba(0,0, 500, 0.7)  !important;
+        transition: var(--transition-speed);
+    }
+}
+
+.buttonSupprimer{
+    background: rgba(255,0, 0, 0.8)!important;
+    color: var(--light-color) !important;
+    padding:0.4rem 0.7rem;
+    border: 1px solid rgba(255,0, 0, 0)!important;
+    &:hover{
+        border: 1px solid rgba(255,0, 0, 0.8)!important;
+        background-color:var(--light-color) !important;
+        color: rgba(255,0, 0, 0.8)  !important;
+        transition: var(--transition-speed);
+    }
+}
+
+@media (max-width: 576px) and (min-width: 200px){
+    .container{
+        padding-top: 2rem;
+    }
+    .container h1{
+        font-size: 2rem;
+    }
+    .controls-group{
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 0.3rem;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .container .row .compteur{
+        border-bottom: 1px solid var(--border-color);
+        margin-bottom: 1rem;
+    }
+    .container .row p{
+        font-size: 1.5rem;
+    }
+    .row .controls-button-filter{
+        margin-bottom: 1rem;
+    }
+    .controls-input i{
+        position: absolute;
+        right: 4rem;
+    }
+}
+@media (max-width: 1440px) and (min-width: 1400px) {
+    .controls-input i{
+        right: 10.8rem;
+    }
+}
