@@ -1,0 +1,14 @@
+{
+  "name": "sitrakiniavo/todo-list",
+  "description": "API REST pour une todo-list",
+  "require": {
+    "php": ">=8.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "core\\": "core/",
+      "Model\\": "Model/",
+      "Controller\\": "Controller/"
+    }
+  }
+}

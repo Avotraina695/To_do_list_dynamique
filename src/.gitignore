@@ -1,0 +1,4 @@
+back-end/vendor/
+.idea/
+back-end/.idea/
+*.log
