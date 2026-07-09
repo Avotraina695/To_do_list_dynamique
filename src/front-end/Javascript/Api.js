@@ -12,7 +12,8 @@ export const getTasks = async () => {
 
 export const addTask = async (title, status = "pending") => {
     try {
-        const response = await fetch(`${API_BASE}/tasks`, {
+        const response = await
+            fetch(`${API_BASE}/tasks`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ title, status })
