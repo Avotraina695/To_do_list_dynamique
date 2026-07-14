@@ -1,5 +1,5 @@
 import { getTasks, addTask, updateTask, deleteTask } from "./Api.js";
-import { renderTasks, updateCounters, getInputElement, getListElement } from "./UI.js";
+import { renderTasks, updateCounters, getInputElement, getListElement } from "./Ui.js";
 
 const inputEl = getInputElement();
 const listEl = getListElement();
@@ -12,22 +12,16 @@ const allButton = document.getElementById("allButton");
 const historyButton = document.getElementById("historyButton");
 
 let allTasks = [];
-let currentFilter = "all"; // "all" | "pending" | "completed" | "history"
-
+let currentFilter = "all";
 function applyFilter() {
     let filtered = allTasks;
-
     if (currentFilter === "pending") {
         filtered = allTasks.filter(t => t.status === "pending");
     } else if (currentFilter === "completed" || currentFilter === "history") {
-        // NOTE: "history" est un alias de "completed" pour l'instant,
-        // faute d'un vrai concept d'historique côté back-end.
         filtered = allTasks.filter(t => t.status === "completed");
     }
-
     renderTasks(filtered);
 }
-
 function setActiveFilter(button) {
     [completedButton, pendingButton, allButton, historyButton].forEach(btn => {
         btn.classList.remove("active-filter");

@@ -33,7 +33,7 @@ export function renderTasks(tasks) {
         const isDone = task.status === "completed";
 
         const li = document.createElement("li");
-        li.className = "list-group-item d-flex align-items-center justify-content-between" + (isDone ? " task-done" : "");
+        li.className = "list-group-item gap-10 d-flex align-items-center justify-content-between" + (isDone ? " task-done" : "");
         li.dataset.id = task.id;
 
         li.innerHTML = `
