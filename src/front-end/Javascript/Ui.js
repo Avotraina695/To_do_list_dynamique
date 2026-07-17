@@ -37,15 +37,21 @@ export function renderTasks(tasks) {
         li.dataset.id = task.id;
 
         li.innerHTML = `
-            <div class="d-flex align-items-center gap-2">
-                <i class="fa-solid ${isDone ? "fa-circle-check" : "fa-circle"} task-toggle"
-                   data-id="${task.id}"
-                   data-status="${task.status}"
-                   role="button"
-                   title="${isDone ? "Marquer à faire" : "Marquer terminée"}"></i>
-                <span class="task-title">${escapeHtml(task.title)}</span>
+            <div class="d-flex tasks justify-content-between">
+                    <i class="fa-solid ${isDone ? "fa-circle-check" : "fa-circle"} task-toggle"
+                       data-id="${task.id}"
+                       data-status="${task.status}"
+                       role="button"
+           
+                       title="${isDone ? "Marquer à faire" : "Marquer terminée"}"></i>
+                  <span class="task-title">${escapeHtml(task.title)}</span>       
             </div>
-            <i class="fa-solid fa-trash task-delete" data-id="${task.id}" role="button" title="Supprimer"></i>
+            <div>
+                 <i class="fa-solid fa-trash buttonSupprimer task-delete" data-id="${task.id}" role="button" title="Supprimer"></i>
+                 <i class="fa-solid fa-pencil buttonModifier task-update" data-id="${task.id}" role="button" title="Modifier"></i>
+            
+            </div>
+           
         `;
 
         listEl.appendChild(li);

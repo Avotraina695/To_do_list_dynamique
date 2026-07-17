@@ -259,3 +259,11 @@ ul li{
         right: 10.8rem;
     }
 }
+.tasks{
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    align-items: center;
+    margin-right: 12rem;
+}
+
