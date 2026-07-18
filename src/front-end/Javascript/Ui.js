@@ -48,7 +48,7 @@ export function renderTasks(tasks) {
             </div>
             <div>
                  <i class="fa-solid fa-trash buttonSupprimer task-delete" data-id="${task.id}" role="button" title="Supprimer"></i>
-                 <i class="fa-solid fa-pencil buttonModifier task-update" data-id="${task.id}" role="button" title="Modifier"></i>
+                 <i class="fa-solid fa-pencil buttonModifier task-modify" data-id="${task.id}" role="button" title="Modifier"></i>
             
             </div>
            

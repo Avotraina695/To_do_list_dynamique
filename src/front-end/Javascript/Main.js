@@ -1,4 +1,4 @@
-import { getTasks, addTask, updateTask, deleteTask } from "./Api.js";
+import {getTasks, addTask, updateTask, deleteTask, modifyTask} from "./Api.js";
 import { renderTasks, updateCounters, getInputElement, getListElement } from "./Ui.js";
 
 const inputEl = getInputElement();
@@ -107,13 +107,29 @@ listEl.addEventListener("click", async (e) => {
 
     const del = e.target.closest(".task-delete");
     if (del) {
-        const result = await deleteTask(del.dataset.id);
+        if (confirm("Are you sure you want to delete?")) {
+            const result = await deleteTask(del.dataset.id);
+            if (!result.success) {
+                console.error(result.message);
+                return;
+            }
+            refresh();
+        }
+
+    }
+    const mod = e.target.closest(".task-modify");
+    let title = e.target.closest(".task-title");
+    if (mod) {
+        title = prompt("Modify task");
+        const result = await modifyTask(mod.dataset.id,title);
         if (!result.success) {
             console.error(result.message);
             return;
         }
         refresh();
+        return;
     }
+
 });
 
 refresh();

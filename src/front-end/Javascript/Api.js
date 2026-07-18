@@ -50,3 +50,17 @@ export const deleteTask = async (id) => {
         return { success: false, message: "Connexion au serveur impossible." };
     }
 };
+
+export const modifyTask = async (id, title) => {
+    try{
+        const response = await fetch(`${API_BASE}/tasks/${id}`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ title})
+        })
+        return await response.json();
+    }catch (error) {
+        console.error("Erreur modify :", error);
+        return { success: false, message: "Connexion au serveur impossible." };
+    }
+};

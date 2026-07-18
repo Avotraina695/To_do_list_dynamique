@@ -5,23 +5,24 @@ namespace Controller;
 use Model\Add_task;
 use Model\Delete_task;
 use Model\List_task;
-use Model\Update_task;
+use Model\Modify_task;
+use Model\Update_filtre;
 
 class Controller
 {
     private Add_task $add_task;
     private List_task $list_task;
-
-    private Update_task $update_task;
-
+    private Update_filtre $update_task;
     private Delete_task $delete_task;
+    private Modify_task $modify_task;
 
     public function __construct()
     {
         $this->add_task = new Add_task();
         $this->list_task = new List_task();
-        $this->update_task = new Update_task();
+        $this->update_task = new Update_filtre();
         $this->delete_task = new Delete_task();
+        $this->modify_task = new Modify_task();
     }
 
     public function ajout_task()
@@ -62,7 +63,7 @@ class Controller
             http_response_code(500);
             echo json_encode([
                 "success" => false,
-                "message" => "Erreur serveur lors de l'ajout de la tâche.",
+                "message" => $e->getMessage()
                 // "debug" => $e->getMessage()
             ]);
         }
@@ -113,7 +114,6 @@ class Controller
             http_response_code(200);
             echo json_encode([
                 "success" => true,
-                "message" => "Tâche mise à jour avec succès.",
                 "task" => $result
             ]);
 
@@ -121,7 +121,6 @@ class Controller
             http_response_code(500);
             echo json_encode([
                 "success" => false,
-                "message" => "Tâche mise à jour avec succès."
             ]);
         }
     }
@@ -149,6 +148,43 @@ class Controller
             echo json_encode([
                 "success" => false,
                 "message" => "Erreur serveur lors de la suppression."
+            ]);
+        }
+    }
+
+    public function ModifyTask($id)
+    {
+        header("Content-type: application/json");
+        $data = json_decode(file_get_contents("php://input"), true);
+        $title = trim($data['title'] ?? "");
+        if (empty($title)) {
+            http_response_code(400);
+            echo json_encode([
+                "success" => false,
+                "message" => "Tous les champs sont obligatoires."
+            ]);
+            return;
+        }
+        try {
+            $result = $this->modify_task->modifyTask($id, $title);
+            if ($result == null){
+                http_response_code(404);
+                echo json_encode([
+                    "success" => false,
+                    "task" => $result
+                ]);
+            return;
+            }
+            http_response_code(200);
+            echo json_encode([
+                "success" => true,
+                "task" => $result
+            ]);
+        } catch (\PDOException $e) {
+            http_response_code(500);
+            echo json_encode([
+                "success" => false,
+                "message" => $e->getMessage()
             ]);
         }
     }

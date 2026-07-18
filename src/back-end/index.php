@@ -1,7 +1,7 @@
 <?php
 
 header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
+header("Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type");
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
@@ -37,6 +37,12 @@ if ($method === 'PUT' && preg_match('#^/tasks/(\d+)$#', $uri, $matches)) {
     exit;
 }
 
+
+if ($method === 'PATCH' && preg_match('#^/tasks/(\d+)$#', $uri, $matches)) {
+    $id = (int)$matches[1];
+    $controller->ModifyTask($id);
+    exit;
+}
 
 if ($method === 'DELETE' && preg_match('#^/tasks/(\d+)$#', $uri, $matches)) {
     $id = (int)$matches[1];

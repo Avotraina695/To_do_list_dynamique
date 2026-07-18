@@ -1,28 +1,29 @@
 <?php
+
 namespace Model;
 
 use core\Database;
+use http\Encoding\Stream;
 use PDO;
 
-class Update_task extends Database
+class Modify_task extends Database
 {
-    public function updateStatus(int $id, string $status)
+    public function modifyTask(int $id ,string $title)
     {
         $check = $this->connection->prepare("SELECT * FROM tasks WHERE id = :id");
-        $check->bindParam(':id', $id, PDO::PARAM_INT);
+        $check->bindParam(':id', $id , PDO::PARAM_INT);
         $check->execute();
-
         if (!$check->fetch(PDO::FETCH_ASSOC)) {
             return null;
         }
 
-        $sql = "UPDATE tasks SET status = :status WHERE id = :id";
+        $sql = "UPDATE tasks SET title = :title WHERE id = :id";
         $stmt = $this->connection->prepare($sql);
-        $stmt->bindParam(':status', $status);
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->bindParam(":title", $title);
+        $stmt->bindParam(":id", $id, PDO::PARAM_INT);
         $stmt->execute();
 
-        $select = $this->connection->prepare("SELECT * FROM tasks WHERE id = :id");
+        $select = $this-> connection-> prepare("SELECT * FROM tasks WHERE id = :id");
         $select->bindParam(':id', $id, PDO::PARAM_INT);
         $select->execute();
 
