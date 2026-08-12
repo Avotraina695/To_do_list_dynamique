@@ -16,6 +16,8 @@ class Controller
     private Delete_task $delete_task;
     private Modify_task $modify_task;
 
+
+
     public function __construct()
     {
         $this->add_task = new Add_task();
@@ -128,7 +130,7 @@ class Controller
     public function deleteTask($id){
         header("Content-type: application/json");
         try {
-            $delete = $this->delete_task-> delete_task($id);
+            $delete = $this->delete_task-> deleteTask($id);
             if (!$delete) {
                 http_response_code(404);
                 echo json_encode([
@@ -185,6 +187,26 @@ class Controller
             echo json_encode([
                 "success" => false,
                 "message" => $e->getMessage()
+            ]);
+        }
+    }
+    public function getHistory()
+    {
+        header("Content-type: application/json");
+
+        try {
+            $tasks = $this->list_task->getHistory();
+
+            http_response_code(200);
+            echo json_encode([
+                "success" => true,
+                "tasks" => $tasks
+            ]);
+        } catch (\PDOException $e) {
+            http_response_code(500);
+            echo json_encode([
+                "success" => false,
+                "message" => "Erreur serveur lors de la récupération de l'historique."
             ]);
         }
     }

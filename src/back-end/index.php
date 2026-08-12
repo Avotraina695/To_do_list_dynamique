@@ -23,7 +23,10 @@ if ($method === 'POST' && $uri === '/tasks') {
     $controller->ajout_task();
     exit;
 }
-
+if ($method === 'GET' && $uri === '/tasks/history') {
+    $controller->getHistory();
+    exit;
+}
 
 if ($method === 'GET' && $uri === '/tasks') {
     $controller->getTasks();

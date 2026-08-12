@@ -10,9 +10,7 @@ class Database
     private $dbname = "todo_app";
     private $user = "root";
     private $password = "1234";
-
     protected PDO $connection;
-
     public function __construct(){
         $this->connect();
     }

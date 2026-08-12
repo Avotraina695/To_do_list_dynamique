@@ -9,6 +9,18 @@ function escapeHtml(str) {
     return div.innerHTML;
 }
 
+function formatDate(str) {
+    if (!str) return "";
+    const d = new Date(str.replace(" ", "T"));
+    if (isNaN(d)) return str;
+    return d.toLocaleDateString("fr-FR", {
+        day: "2-digit",
+        month: "short",
+        hour: "2-digit",
+        minute: "2-digit"
+    });
+}
+
 export function updateCounters(tasks) {
     const completed = tasks.filter(t => t.status === "completed").length;
     const pending = tasks.length - completed;
@@ -18,7 +30,8 @@ export function updateCounters(tasks) {
     pendingEl.textContent = pending;
 }
 
-export function renderTasks(tasks) {
+
+export function renderTasks(tasks, isHistoryView = false) {
     listEl.innerHTML = "";
 
     if (!tasks.length) {
@@ -31,27 +44,37 @@ export function renderTasks(tasks) {
 
     tasks.forEach(task => {
         const isDone = task.status === "completed";
+        const isDeleted = !!task.deleted_at;
 
         const li = document.createElement("li");
-        li.className = "list-group-item gap-10 d-flex align-items-center justify-content-between" + (isDone ? " task-done" : "");
+        li.className = "list-group-item d-flex align-items-center justify-content-between"
+            + (isDone ? " task-done" : "")
+            + (isDeleted ? " task-deleted" : "");
         li.dataset.id = task.id;
 
+        const toggleIcon = isDeleted
+            ? `<i class="fa-solid fa-ban text-muted" title="Tâche supprimée"></i>`
+            : `<i class="fa-solid ${isDone ? "fa-circle-check" : "fa-circle"} task-toggle"
+                   data-id="${task.id}"
+                   data-status="${task.status}"
+                   role="button"
+                   title="${isDone ? "Marquer à faire" : "Marquer terminée"}"></i>`;
+
+        const deleteIcon = isDeleted
+            ? ""
+            : `<i class="fa-solid fa-trash task-delete" data-id="${task.id}" role="button" title="Supprimer"></i>`;
+
+        const statusTag = isDeleted
+            ? `<span class="badge bg-secondary">Supprimée le ${formatDate(task.deleted_at)}</span>`
+            : `<span class="badge ${isDone ? "bg-success" : "bg-warning text-dark"}">${isDone ? "Terminée" : "En attente"}</span>`;
+
         li.innerHTML = `
-            <div class="d-flex tasks justify-content-between">
-                    <i class="fa-solid ${isDone ? "fa-circle-check" : "fa-circle"} task-toggle"
-                       data-id="${task.id}"
-                       data-status="${task.status}"
-                       role="button"
-           
-                       title="${isDone ? "Marquer à faire" : "Marquer terminée"}"></i>
-                  <span class="task-title">${escapeHtml(task.title)}</span>       
+            <div class="d-flex align-items-center gap-2">
+                ${toggleIcon}
+                <span class="task-title">${escapeHtml(task.title)}</span>
+                ${isHistoryView ? statusTag : ""}
             </div>
-            <div>
-                 <i class="fa-solid fa-trash buttonSupprimer task-delete" data-id="${task.id}" role="button" title="Supprimer"></i>
-                 <i class="fa-solid fa-pencil buttonModifier task-modify" data-id="${task.id}" role="button" title="Modifier"></i>
-            
-            </div>
-           
+            ${deleteIcon}
         `;
 
         listEl.appendChild(li);

@@ -7,9 +7,9 @@ use PDO;
 
 class Delete_task extends Database
 {
-    public function delete_task(int $id): bool
+    public function deleteTask(int $id): bool
     {
-        $sql = "DELETE FROM tasks WHERE id = :id";
+        $sql = "UPDATE tasks SET deleted_at = NOW() WHERE id = :id AND deleted_at IS NULL";
         $stmt = $this->connection->prepare($sql);
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         $stmt->execute();

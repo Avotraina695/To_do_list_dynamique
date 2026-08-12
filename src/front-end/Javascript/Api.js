@@ -64,3 +64,13 @@ export const modifyTask = async (id, title) => {
         return { success: false, message: "Connexion au serveur impossible." };
     }
 };
+
+export const getHistory = async () => {
+    try {
+        const response = await fetch(`${API_BASE}/tasks/history`);
+        return await response.json();
+    } catch (error) {
+        console.error("Erreur GET history :", error);
+        return { success: false, message: "Connexion au serveur impossible." };
+    }
+};

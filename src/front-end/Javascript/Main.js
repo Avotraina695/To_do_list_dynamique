@@ -1,4 +1,4 @@
-import {getTasks, addTask, updateTask, deleteTask, modifyTask} from "./Api.js";
+import { getTasks, addTask, updateTask, deleteTask, getHistory } from "./Api.js";
 import { renderTasks, updateCounters, getInputElement, getListElement } from "./Ui.js";
 
 const inputEl = getInputElement();
@@ -12,16 +12,20 @@ const allButton = document.getElementById("allButton");
 const historyButton = document.getElementById("historyButton");
 
 let allTasks = [];
-let currentFilter = "all";
+let currentFilter = "all"; // "all" | "pending" | "completed" | "history"
+
 function applyFilter() {
     let filtered = allTasks;
+
     if (currentFilter === "pending") {
         filtered = allTasks.filter(t => t.status === "pending");
-    } else if (currentFilter === "completed" || currentFilter === "history") {
+    } else if (currentFilter === "completed") {
         filtered = allTasks.filter(t => t.status === "completed");
     }
-    renderTasks(filtered);
+
+    renderTasks(filtered, false);
 }
+
 function setActiveFilter(button) {
     [completedButton, pendingButton, allButton, historyButton].forEach(btn => {
         btn.classList.remove("active-filter");
@@ -37,7 +41,21 @@ async function refresh() {
     }
     allTasks = data.tasks;
     updateCounters(allTasks);
-    applyFilter();
+
+    if (currentFilter === "history") {
+        loadHistory();
+    } else {
+        applyFilter();
+    }
+}
+
+async function loadHistory() {
+    const data = await getHistory();
+    if (!data.success) {
+        listEl.innerHTML = `<li class="list-group-item text-danger text-center">Connexion au serveur impossible.</li>`;
+        return;
+    }
+    renderTasks(data.tasks, true);
 }
 
 async function handleAddTask() {
@@ -89,7 +107,7 @@ completedButton.addEventListener("click", () => {
 historyButton.addEventListener("click", () => {
     currentFilter = "history";
     setActiveFilter(historyButton);
-    applyFilter();
+    loadHistory();
 });
 
 listEl.addEventListener("click", async (e) => {
@@ -107,29 +125,13 @@ listEl.addEventListener("click", async (e) => {
 
     const del = e.target.closest(".task-delete");
     if (del) {
-        if (confirm("Are you sure you want to delete?")) {
-            const result = await deleteTask(del.dataset.id);
-            if (!result.success) {
-                console.error(result.message);
-                return;
-            }
-            refresh();
-        }
-
-    }
-    const mod = e.target.closest(".task-modify");
-    let title = e.target.closest(".task-title");
-    if (mod) {
-        title = prompt("Modify task");
-        const result = await modifyTask(mod.dataset.id,title);
+        const result = await deleteTask(del.dataset.id);
         if (!result.success) {
             console.error(result.message);
             return;
         }
         refresh();
-        return;
     }
-
 });
 
 refresh();
