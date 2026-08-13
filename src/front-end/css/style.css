@@ -1,269 +1,344 @@
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
 :root {
-    --primary-color: #4a6fa5;
-    --primary-hover: #3a5a8f;
-    --secondary-color : #6c757d;
-    --success-color: #28a745;
-    --danger-color: #dc3545;
-    --warning-color: #ffc107;
-    --info-color: #17a2b8;
-    --light-color: #f8f9fa;
-    --dark-color: #343a40;
-    --text-color: #212529;
-    --text-light: #6c757d;
-    --bg-color: #ffffff;
-    --bg-secondary: #f8f9fa;
-    --border-color: #dee2e6;
-    --shadow-color: rgba(0, 0, 0, 0.1);
-    --transition-speed: 0.3s;
-    --font-weight-medium :bold;
+    --bg: #F4F5F7;
+    --surface: #FFFFFF;
+    --border: #E4E7EC;
+    --ink: #101828;
+    --ink-soft: #667085;
+    --ink-faint: #98A2B3;
+
+    --accent: #2E5CE6;
+    --accent-hover: #2447BF;
+    --accent-soft: #EEF2FF;
+
+    --success: #12805C;
+    --success-soft: #E7F7EF;
+    --warning: #B54708;
+    --warning-soft: #FFF6E5;
+    --danger: #B42318;
+    --danger-soft: #FEF3F2;
+
+    --radius: 10px;
+    --shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.05);
+    --shadow-md: 0 4px 12px rgba(16, 24, 40, 0.06);
 }
-body{
+
+* { box-sizing: border-box; }
+
+body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1.5;
     min-height: 100vh;
+}
+
+#app.container {
+    max-width: 680px;
+    padding: 56px 20px 80px;
+}
+
+
+
+h1.text-center {
+
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin-bottom: 8px !important;
+    text-align: center !important;
+}
+
+h1.text-center::after {
     display: flex;
-    justify-content: center;
     align-items: center;
-    overflow-x: hidden;
+    justify-content: center;
+    content: "Organisez votre travail, une tâche à la fois.";
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--ink-soft);
+    letter-spacing: 0;
+    margin-top: 6px;
 }
-.container{
-    position: relative;
-}
-.container h1{
-    text-align: center;
-    color: var(--primary-color);
-    font-weight: var(--font-weight-medium);
-    font-size: 3rem;
-}
-.container .totalCompletedPending{
-    gap: 1rem;
-}
-.container .row .compteur{
-    border: 1px solid var(--border-color);
-    margin-top: 1rem;
-    box-shadow: 2px 2px 9px var(--shadow-color);
-    border-radius: 10px;
-    padding: 1rem;
-    position: relative;
-}
-.container .row p{
-    color: var(--primary-color);
-    font-size: 2rem;
-    font-weight: var(--font-weight-medium);
-    margin: 0;
+
+
+.totalCompletedPending {
+    display: flex;
+    gap: 12px;
+    margin: 28px 0 32px;
     padding: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
-.container .row span{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: var(--font-weight-medium);
+
+.compteur {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px 16px;
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+    transition: border-color 0.15s ease;
 }
-.row .controls-group{
+
+.compteur:hover { border-color: var(--accent); }
+
+.compteur .star-count {
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--ink);
+    margin: 0 0 2px;
+    line-height: 1.1;
+}
+
+.compteur span {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--ink-faint);
+}
+
+#taskCompleted { color: var(--success); }
+#taskPending { color: var(--warning); }
+
+.controls-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 16px;
     width: 100%;
-    display: flex;
-    gap: 1rem;
-    align-items: center;
-    justify-content: space-between;
-    border: 1px solid var(--border-color);
-    margin-top: 1rem;
-    box-shadow: 2px 2px 9px var(--shadow-color);
-    border-radius: 10px;
-    padding: 1.5rem;
-    position: relative;
 }
 
-
-.controls-group .controls-input{
-    width: 88%;
-}
-.controls-group .controls-button button{
-    position: relative;
-    background: rgba(0,0, 500, 0.7)!important;
-    color: var(--light-color) !important;
-    padding:0.3rem 3rem;
-    cursor: pointer;
-    border: 1px solid rgba(0,0, 500, 0.7)!important;
-    &:hover{
-        border: 1px solid rgba(0,0, 500, 0.7)!important;
-        background-color:var(--light-color) !important;
-        color: rgba(0,0, 500, 0.7)  !important;
-        transition: var(--transition-speed);
-    }
-}
-.controls-button-filter button{
-    background: rgba(0,0, 500, 0.7)!important;
-    color: var(--light-color) !important;
-    padding:0.3rem 3rem;
-    border: 1px solid rgba(0,0, 500, 0.7)!important;
-    &:hover{
-        border: 1px solid rgba(0,0, 500, 0.7)!important;
-        background-color:var(--light-color) !important;
-        color: rgba(0,0, 500, 0.7)  !important;
-        transition: var(--transition-speed);
-    }
+.controls-input {
+    flex: 1 1 auto !important;
+    width: auto !important;
+    max-width: none !important;
+    padding: 0 !important;
 }
 
-.controls-group .controls-button i{
-    position: absolute;
-    top: 0.55rem;
-    left: 1.5rem;
+.controls-button {
+    flex: 0 0 auto !important;
+    width: auto !important;
+    max-width: none !important;
+    padding: 0 !important;
 }
-.row .row-content{
-    display: flex;
-    align-items: center;
-    justify-content: center;
+
+#inputTask {
+    width: 100%;
+    height: 46px;
+    padding: 0 40px 0 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    color: var(--ink);
+    box-shadow: var(--shadow-sm);
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
-.row .row-content button{
-    display: flex;
-    justify-content: space-between;
-}
-.row .controls-button-filter{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid var(--border-color);
-    margin-top: 1rem;
-    box-shadow: 2px 2px 9px var(--shadow-color);
-    border-radius: 10px;
-    padding: 1.5rem;
-    position: relative;
-}
-input[type="text"]{
+
+#inputTask::placeholder { color: var(--ink-faint); }
+
+#inputTask:focus {
     outline: none;
-    border-radius: 0.5rem;
-    position: relative;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-soft);
 }
-.controls-input i{
+
+#iconSupprime {
     position: absolute;
-    color:#dc3545;
-    right: 9.5rem;
-    top: 2.2rem;
-    font-size: 1.2rem;
-    opacity: 0;
-    visibility: hidden;
+    right: 14px;
+    top: 67%;
+    transform: translateY(-50%);
+    color: var(--ink-faint);
     cursor: pointer;
-    transition: var(--transition-speed);
+    font-size: 13px;
+    transition: color 0.15s ease;
 }
-.controls-input .visible{
-    visibility: visible;
-    opacity: 1;
-}
-.ListTask{
-    border: 1px solid var(--border-color);
+
+#iconSupprime:hover { color: var(--danger); }
+
+
+
+#AddTaskButton {
+    height: 46px;
+    padding: 0 22px;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius);
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
     display: flex;
     align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+    cursor: pointer;
+    box-shadow: var(--shadow-sm);
+    transition: background 0.15s ease, transform 0.1s ease;
+}
+
+#AddTaskButton:hover { background: var(--accent-hover); }
+#AddTaskButton:active { transform: scale(0.97); }
+#AddTaskButton i { font-size: 12px; }
+
+.row:has(.controls-button-filter) {
+    display: flex;
+    gap: 8px;
+    margin: 0 0 28px;
+    flex-wrap: wrap;
+}
+
+.controls-button-filter {
+    padding: 0 !important;
+    max-width: none !important;
+    flex: none !important;
+}
+
+.filter{
+    width: 100%;!important;
+    display: flex;!important;
     justify-content: center;
-    margin-top: 1rem;
-    box-shadow: 2px 2px 9px var(--shadow-color);
-    border-radius: 10px;
-    padding: 1.5rem;
-    position: relative;
-    padding-bottom: 0;
-}
-ul li{
-    list-style: none;
-}
-.list-item{
-    display: flex;
     align-items: center;
-    justify-content: space-between;
-    margin-bottom: 3rem;
-    margin-top: 1rem;
-}
-.list-item input[type="checkbox"]{
-    position: absolute;
-    left: 1.5rem;
-    top: auto;
+    flex-direction: row;!important;
 }
 
-.list-item .list-group-item-text{
-    position: absolute;
-    left: 5rem;
-    font-weight: bold;
-}
-.list-item .button-action{
-    position: absolute;
-    right: 1.5rem;
-    top: auto;
-    gap: 1rem;
+.controls-button-filter button {
+    height: 36px;
+    padding: 0 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink-soft);
+    cursor: pointer;
+    transition: all 0.15s ease;
 }
 
-.checked{
+.controls-button-filter button:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+.controls-button-filter button.active-filter {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: #fff;
+}
+
+
+.ListTask { margin-top: 8px; }
+
+#listTask {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+#listTask .list-group-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius) !important;
+    padding: 14px 16px;
+    box-shadow: var(--shadow-sm);
+    transition: border-color 0.15s ease, transform 0.1s ease;
+}
+
+#listTask .list-group-item:hover {
+    border-color: #D0D5DD;
+    transform: translateX(2px);
+}
+
+.task-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ink);
+}
+
+.task-done .task-title {
+    text-decoration: line-through;
+    color: var(--ink-faint);
+}
+
+.task-toggle {
+    font-size: 18px;
+    cursor: pointer;
+    color: var(--ink-faint);
+    transition: color 0.15s ease, transform 0.1s ease;
+}
+
+.task-toggle:hover { transform: scale(1.1); }
+.task-toggle.fa-circle-check { color: var(--success); }
+
+.task-delete {
+    color: var(--ink-faint);
+    cursor: pointer;
+    font-size: 14px;
+    padding: 6px;
+    border-radius: 6px;
+    transition: color 0.15s ease, background 0.15s ease;
+}
+
+.task-delete:hover {
+    color: var(--danger);
+    background: var(--danger-soft);
+}
+
+.task-deleted {
+    opacity: 0.55;
+}
+
+.task-deleted .task-title {
     text-decoration: line-through;
 }
-.buttonModifier{
-    background: rgba(0,0, 255, 0.7)!important;
-    color: var(--light-color) !important;
-    padding:0.4rem 0.6rem;
-    border: 0.1px solid rgba(0,0, 255, 0.7)!important;
-    &:hover{
-        border: 1px solid rgba(0,0, 255, 0.7)!important;
-        background-color:var(--light-color) !important;
-        color: rgba(0,0, 500, 0.7)  !important;
-        transition: var(--transition-speed);
-    }
+
+.badge {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 999px;
 }
 
-.buttonSupprimer{
-    background: rgba(255,0, 0, 0.8)!important;
-    color: var(--light-color) !important;
-    padding:0.4rem 0.7rem;
-    border: 1px solid rgba(255,0, 0, 0)!important;
-    &:hover{
-        border: 1px solid rgba(255,0, 0, 0.8)!important;
-        background-color:var(--light-color) !important;
-        color: rgba(255,0, 0, 0.8)  !important;
-        transition: var(--transition-speed);
-    }
+.badge.bg-success {
+    background: var(--success-soft) !important;
+    color: var(--success) !important;
 }
 
-@media (max-width: 576px) and (min-width: 200px){
-    .container{
-        padding-top: 2rem;
-    }
-    .container h1{
-        font-size: 2rem;
-    }
-    .controls-group{
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        gap: 0.3rem;
-        align-items: center;
-        justify-content: space-between;
-    }
-    .container .row .compteur{
-        border-bottom: 1px solid var(--border-color);
-        margin-bottom: 1rem;
-    }
-    .container .row p{
-        font-size: 1.5rem;
-    }
-    .row .controls-button-filter{
-        margin-bottom: 1rem;
-    }
-    .controls-input i{
-        position: absolute;
-        right: 4rem;
-    }
-}
-@media (max-width: 1440px) and (min-width: 1400px) {
-    .controls-input i{
-        right: 10.8rem;
-    }
-}
-.tasks{
-    display: flex;
-    flex-direction: row;
-    gap: 1rem;
-    align-items: center;
-    margin-right: 12rem;
+.badge.bg-warning {
+    background: var(--warning-soft) !important;
+    color: var(--warning) !important;
 }
 
+.badge.bg-secondary {
+    background: #F2F4F7 !important;
+    color: var(--ink-soft) !important;
+}
+
+
+#listTask .text-muted {
+    padding: 48px 20px !important;
+    color: var(--ink-faint) !important;
+    font-size: 14px;
+    background: transparent !important;
+    border: 1px dashed var(--border) !important;
+    box-shadow: none !important;
+}
+
+
+
+@media (max-width: 560px) {
+    #app.container { padding: 32px 16px 60px; }
+    .totalCompletedPending { flex-direction: column; }
+    .controls-group { flex-direction: column; }
+    #AddTaskButton { width: 100%; justify-content: center; }
+}
