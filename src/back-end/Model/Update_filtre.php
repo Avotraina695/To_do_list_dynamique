@@ -28,4 +28,27 @@ class Update_filtre extends Database
 
         return $select->fetch(PDO::FETCH_ASSOC);
     }
+
+    public function updateTitle(int $id, string $titre)
+    {
+        $check = $this->connection->prepare("SELECT * FROM tasks WHERE id = :id AND deleted_at IS NULL");
+        $check->bindParam(':id', $id, PDO::PARAM_INT);
+        $check->execute();
+
+        if (!$check->fetch(PDO::FETCH_ASSOC)) {
+            return null;
+        }
+
+        $sql = "UPDATE tasks SET title = :title WHERE id = :id";
+        $stmt = $this->connection->prepare($sql);
+        $stmt->bindParam(':title', $titre);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        $select = $this->connection->prepare("SELECT * FROM tasks WHERE id = :id");
+        $select->bindParam(':id', $id, PDO::PARAM_INT);
+        $select->execute();
+
+        return $select->fetch(PDO::FETCH_ASSOC);
+    }
 }

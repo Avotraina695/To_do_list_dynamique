@@ -30,7 +30,8 @@ export function updateCounters(tasks) {
     pendingEl.textContent = pending;
 }
 
-
+// isHistoryView : quand true, affiche les tâches supprimées différemment
+// et désactive toutes les actions (toggle/éditer/supprimer) dessus
 export function renderTasks(tasks, isHistoryView = false) {
     listEl.innerHTML = "";
 
@@ -51,6 +52,7 @@ export function renderTasks(tasks, isHistoryView = false) {
             + (isDone ? " task-done" : "")
             + (isDeleted ? " task-deleted" : "");
         li.dataset.id = task.id;
+        li.dataset.title = task.title;
 
         const toggleIcon = isDeleted
             ? `<i class="fa-solid fa-ban text-muted" title="Tâche supprimée"></i>`
@@ -60,25 +62,49 @@ export function renderTasks(tasks, isHistoryView = false) {
                    role="button"
                    title="${isDone ? "Marquer à faire" : "Marquer terminée"}"></i>`;
 
-        const deleteIcon = isDeleted
+        const actionIcons = isDeleted
             ? ""
-            : `<i class="fa-solid fa-trash task-delete" data-id="${task.id}" role="button" title="Supprimer"></i>`;
+            : `<i class="fa-solid fa-pen task-edit" data-id="${task.id}" role="button" title="Modifier"></i>
+               <i class="fa-solid fa-trash task-delete" data-id="${task.id}" role="button" title="Supprimer"></i>`;
 
         const statusTag = isDeleted
             ? `<span class="badge bg-secondary">Supprimée le ${formatDate(task.deleted_at)}</span>`
             : `<span class="badge ${isDone ? "bg-success" : "bg-warning text-dark"}">${isDone ? "Terminée" : "En attente"}</span>`;
 
         li.innerHTML = `
-            <div class="d-flex align-items-center gap-2">
+            <div class="d-flex align-items-center gap-2 task-content">
                 ${toggleIcon}
-                <span class="task-title">${escapeHtml(task.title)}</span>
+                <span class="task-title" data-id="${task.id}">${escapeHtml(task.title)}</span>
                 ${isHistoryView ? statusTag : ""}
             </div>
-            ${deleteIcon}
+            <div class="d-flex align-items-center gap-2 task-actions">
+                ${actionIcons}
+            </div>
         `;
 
         listEl.appendChild(li);
     });
+}
+
+// Remplace le <span> du titre par un champ éditable, et retourne l'input créé
+export function enterEditMode(id) {
+    const titleSpan = listEl.querySelector(`.task-title[data-id="${id}"]`);
+    if (!titleSpan) return null;
+
+    const currentTitle = titleSpan.textContent;
+
+    const input = document.createElement("input");
+    input.type = "text";
+    input.className = "task-edit-input";
+    input.value = currentTitle;
+    input.dataset.id = id;
+    input.dataset.original = currentTitle;
+
+    titleSpan.replaceWith(input);
+    input.focus();
+    input.select();
+
+    return input;
 }
 
 export function getInputElement() {

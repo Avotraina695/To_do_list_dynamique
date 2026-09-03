@@ -202,13 +202,6 @@ h1.text-center::after {
     flex: none !important;
 }
 
-.filter{
-    width: 100%;!important;
-    display: flex;!important;
-    justify-content: center;
-    align-items: center;
-    flex-direction: row;!important;
-}
 
 .controls-button-filter button {
     height: 36px;
@@ -228,6 +221,33 @@ h1.text-center::after {
     border-color: var(--accent);
     color: var(--accent);
 }
+
+.task-edit-input {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ink);
+    border: 1.5px solid var(--accent);
+    border-radius: 6px;
+    padding: 2px 8px;
+    outline: none;
+    background: var(--accent-soft);
+    min-width: 140px;
+}
+
+.task-edit {
+    color: var(--ink-faint);
+    cursor: pointer;
+    font-size: 13px;
+    padding: 7px 8px;
+    transition: color 0.15s ease, background 0.15s ease;
+}
+
+.task-edit:hover {
+    color: var(--accent);
+    background: var(--accent-soft);
+}
+
 
 .controls-button-filter button.active-filter {
     background: var(--ink);

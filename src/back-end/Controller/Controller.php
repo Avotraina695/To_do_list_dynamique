@@ -5,8 +5,8 @@ namespace Controller;
 use Model\Add_task;
 use Model\Delete_task;
 use Model\List_task;
-use Model\Modify_task;
 use Model\Update_filtre;
+
 
 class Controller
 {
@@ -14,7 +14,7 @@ class Controller
     private List_task $list_task;
     private Update_filtre $update_task;
     private Delete_task $delete_task;
-    private Modify_task $modify_task;
+
 
 
 
@@ -24,7 +24,6 @@ class Controller
         $this->list_task = new List_task();
         $this->update_task = new Update_filtre();
         $this->delete_task = new Delete_task();
-        $this->modify_task = new Modify_task();
     }
 
     public function ajout_task()
@@ -127,6 +126,49 @@ class Controller
         }
     }
 
+    public function modifierTask(int $id)
+    {
+        header("Content-type: application/json");
+        $data = json_decode(file_get_contents("php://input"), true);
+
+        $titre = trim($data['titre'] ?? "");
+
+        if (empty($titre)) {
+            http_response_code(400);
+            echo json_encode([
+                "success" => false,
+                "message" => "Le titre est obligatoire."
+            ]);
+            return;
+        }
+
+        try {
+            $result = $this->update_task->updateTitle($id, $titre);
+
+            if ($result === null) {
+                http_response_code(404);
+                echo json_encode([
+                    "success" => false,
+                    "message" => "Tâche introuvable."
+                ]);
+                return;
+            }
+
+            http_response_code(200);
+            echo json_encode([
+                "success" => true,
+                "message" => "Titre mis à jour avec succès.",
+                "task" => $result
+            ]);
+        } catch (\PDOException $e) {
+            http_response_code(500);
+            echo json_encode([
+                "success" => false,
+                "message" => "Erreur serveur lors de la modification."
+            ]);
+        }
+    }
+
     public function deleteTask($id){
         header("Content-type: application/json");
         try {
@@ -150,43 +192,6 @@ class Controller
             echo json_encode([
                 "success" => false,
                 "message" => "Erreur serveur lors de la suppression."
-            ]);
-        }
-    }
-
-    public function ModifyTask($id)
-    {
-        header("Content-type: application/json");
-        $data = json_decode(file_get_contents("php://input"), true);
-        $title = trim($data['title'] ?? "");
-        if (empty($title)) {
-            http_response_code(400);
-            echo json_encode([
-                "success" => false,
-                "message" => "Tous les champs sont obligatoires."
-            ]);
-            return;
-        }
-        try {
-            $result = $this->modify_task->modifyTask($id, $title);
-            if ($result == null){
-                http_response_code(404);
-                echo json_encode([
-                    "success" => false,
-                    "task" => $result
-                ]);
-            return;
-            }
-            http_response_code(200);
-            echo json_encode([
-                "success" => true,
-                "task" => $result
-            ]);
-        } catch (\PDOException $e) {
-            http_response_code(500);
-            echo json_encode([
-                "success" => false,
-                "message" => $e->getMessage()
             ]);
         }
     }

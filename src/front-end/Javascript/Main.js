@@ -1,5 +1,5 @@
-import { getTasks, addTask, updateTask, deleteTask, getHistory } from "./Api.js";
-import { renderTasks, updateCounters, getInputElement, getListElement } from "./Ui.js";
+import { getTasks, addTask, updateTask, deleteTask, getHistory, modificationTask } from "./Api.js";
+import { renderTasks, updateCounters, getInputElement, getListElement, enterEditMode } from "./Ui.js";
 
 const inputEl = getInputElement();
 const listEl = getListElement();
@@ -72,6 +72,27 @@ async function handleAddTask() {
     refresh();
 }
 
+async function saveEdit(input) {
+    const id = input.dataset.id;
+    const newTitle = input.value.trim();
+    const original = input.dataset.original;
+
+    // Rien à faire si vide ou inchangé : on annule proprement
+    if (!newTitle || newTitle === original) {
+        refresh();
+        return;
+    }
+
+    const result = await modificationTask(id, newTitle);
+    if (!result.success) {
+        console.error(result.message);
+        refresh();
+        return;
+    }
+
+    refresh();
+}
+
 addButton.addEventListener("click", handleAddTask);
 
 inputEl.addEventListener("keydown", (e) => {
@@ -120,6 +141,27 @@ listEl.addEventListener("click", async (e) => {
             return;
         }
         refresh();
+        return;
+    }
+
+    const edit = e.target.closest(".task-edit");
+    if (edit) {
+        const input = enterEditMode(edit.dataset.id);
+        if (!input) return;
+
+        input.addEventListener("keydown", (ev) => {
+            if (ev.key === "Enter") {
+                ev.preventDefault();
+                input.blur();
+            }
+            if (ev.key === "Escape") {
+                ev.preventDefault();
+                input.value = input.dataset.original;
+                input.blur();
+            }
+        });
+
+        input.addEventListener("blur", () => saveEdit(input), { once: true });
         return;
     }
 

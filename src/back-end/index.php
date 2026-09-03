@@ -39,11 +39,9 @@ if ($method === 'PUT' && preg_match('#^/tasks/(\d+)$#', $uri, $matches)) {
     $controller->updateTask($id);
     exit;
 }
-
-
 if ($method === 'PATCH' && preg_match('#^/tasks/(\d+)$#', $uri, $matches)) {
-    $id = (int)$matches[1];
-    $controller->ModifyTask($id);
+    $id = (int) $matches[1];
+    $controller->modifierTask($id);
     exit;
 }
 
